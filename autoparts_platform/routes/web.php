@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'test'])->name('test');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'aboutUs'])->name('about');
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
+Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
+
+
+Route::get('/sell', [App\Http\Controllers\SellerController::class, 'sellaccount'])->name('sellaccount');
+Route::post('/createseller', [App\Http\Controllers\SellerController::class, 'store'])->name('seller.store');
+
+Route::get('/sellparts', [App\Http\Controllers\SellerController::class, 'sellparts'])->name('sellparts');
+

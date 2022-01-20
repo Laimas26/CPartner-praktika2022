@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -23,14 +26,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $userId = Auth::id();
+
+        $seller = Seller::where('user_id', $userId)->first();
+
+        return view('index', compact('seller', 'userId'));
     }
-    public function test()
-    {
-        return view('index');
-    }
+    // public function index()
+    // {
+    //     return view('index');
+    // }
     public function aboutUs()
     {
-        return view('about');
+        return redirect()->route('index', ['#about']);
+        // return view('index');
     }
+    public function contact()
+    {
+        return redirect()->route('index', ['#contact']);
+        // return view('index');
+    }
+    public function search()
+    {
+        return view('carparts.search');
+    }
+
 }

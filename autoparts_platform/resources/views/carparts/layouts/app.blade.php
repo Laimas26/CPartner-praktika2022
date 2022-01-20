@@ -11,6 +11,10 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.slim.js"
+  integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY="
+  crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -19,7 +23,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('assets/css/search.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sell.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+
 
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
@@ -35,8 +42,6 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
-
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- ======= Top Bar ======= -->
@@ -81,7 +86,7 @@
                 @endif
             @else
 
-            @include('layouts.navbar')
+            @include('carparts.layouts.navbar')
                 <li class="nav-item dropdown">
                     <div>
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -115,4 +120,16 @@
     </div>
 </body>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('assets/js/search.js') }}"></script>
+<script src="{{ asset('assets/js/seller.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+<script>
+  const phoneInputField = document.querySelector("#phone");
+  const phoneInput = window.intlTelInput(phoneInputField, {
+    preferredCountries: ["lt", "lv", "pl", "ee"],
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+  });
+</script>
 </html>
