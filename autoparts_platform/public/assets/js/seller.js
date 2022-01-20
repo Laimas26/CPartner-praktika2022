@@ -13,3 +13,4 @@ $('#phone').on('change', function() {
 // info.removeAttribute('hidden');
  info.innerHTML = `Numeris teisingoje formoje turi atrodyti šitaip: <strong>${phoneNumber}</strong>`;
 });
+

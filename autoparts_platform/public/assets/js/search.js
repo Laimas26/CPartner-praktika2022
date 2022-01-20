@@ -32,3 +32,12 @@ $(document).ready(function(){
       }, 20);
 
   })
+
+  $("#vehicleModelSell").on('change', function() {
+    $("#partForm").removeAttr('hidden');
+  
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $("#partForm").offset().top
+      }, 20);
+  
+  })
