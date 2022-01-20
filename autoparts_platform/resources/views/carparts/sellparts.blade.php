@@ -66,11 +66,12 @@
                         <div class="col d-flex addphoto" style="padding-bottom: 20px; padding-right: 10px; padding-left: 10px;">
                             <div class="card align-items-sm-center" style="border-width: 0px;width: 100%;height: 100%;">
                                 <div id="preview-image" class="card-body d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center justify-content-lg-center align-items-lg-center justify-content-xl-center align-items-xl-center" style="overflow: hidden;border-radius: 3rem;background: url('assets/img/delicious-thanksgiving-food-flat-lay.jpg') center / cover, rgb(248,249,252);width: 100%;height: 100%;padding: 0px;border: 2px none #d9d9d9 ;">
-                                    <h6 class="d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center" style="text-align: center; overflow: auto; word-break: keep-all; color: rgb(255,255,255);padding-top: 0px;font-size: 54px;background: rgba(0,0,0,0.32);width: 100%;height: 100%;border-radius: 3rem;margin: 0px;"><strong style="font-weight: 600;"><div id="js-text-block" data-text=""></div></strong></h6>
+                                    <img id="preview-image" src="https://www.ekoagros.lt/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"
+                                    alt="preview image" style="max-height: 250px;">
                                 </div>
                             </div>
                         </div>
-                    </div><button class="btn btn-primary btn-block btn-user" id="Prideti" type="submit" style="background: #ff2351;font-size: 16px;font-style: normal;color: rgb(255,255,255);box-shadow: 0px 0px 1px #ff2351;border-style: none;">Pridėti</button>
+                    </div><button class="btn btn-primary btn-block btn-user" id="Prideti" type="submit" style="background: #7b8586;font-size: 16px;font-style: normal;color: rgb(255,255,255);box-shadow: 0px 0px 1px #ff2351;border-style: none;">Pridėti</button>
                 </form>
 
             </div>
