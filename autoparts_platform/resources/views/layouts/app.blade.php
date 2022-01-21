@@ -59,9 +59,9 @@
   <header id="header" class="d-flex align-items-center">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="{{ route('index') }}">AutoDalys</a></h1>
+      {{-- <h1 class="logo me-auto"><a href="{{ route('index') }}">AutoDalys</a></h1> --}}
       <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <a href="{{ route('index') }}" class="logo me-auto"><img src="{{ url('assets/img/carMain.png') }}" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
