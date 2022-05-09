@@ -133,7 +133,7 @@
 
                 <hr class="my-4">
 
-                <h4 class="mb-3">Payment</h4>
+                <h4 class="mb-3">Apmokėjimas</h4>
 
                 <div class="my-3">
                     <div class="form-check">

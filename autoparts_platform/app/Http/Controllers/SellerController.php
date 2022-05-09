@@ -148,12 +148,13 @@ class SellerController extends Controller
         $seller = Seller::where('user_id', $userId)->first();
         $vehicleBrands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
+        $vehicleParts = Parts::all();
         $partsCategories = PartsCategories::all();
         $cart = Cart::where('user_id', $userId)->get();
         $cartCount = DB::table('carts')
             ->where('user_id', $userId)->count();
 
-            return view('carparts.sellparts', compact('vehicleBrands', 'vehicleModels', 'partsCategories', 'cart', 'cartCount'));
+            return view('carparts.sellparts', compact('vehicleBrands', 'vehicleModels', 'vehicleParts' , 'partsCategories', 'cart', 'cartCount'));
 
         
     }

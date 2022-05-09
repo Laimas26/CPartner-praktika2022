@@ -81,8 +81,13 @@
               <option data-tokens="" value="Gera">Gera būklė</option>
               <option data-tokens="" value="Puiki">Puiki būklė</option>
             </select>   
-            {{-- <input type="checkbox" name="" id=""><br>
-            <input type="checkbox" name="" id=""> --}}
+            <h6>Pasirinkite kategoriją</h6>
+            <select id="category_filter" style="width: 60%" data-live-search="true">
+              <option></option>
+              @foreach($partsCategories as $category)
+              <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @endforeach
+            </select>   
           </div>
           <div class="col-4 border border-dark">
             <span style="padding-left: 80px">Pagaminimo metai</span><br>
@@ -249,6 +254,10 @@ $('#search_id').select2({
   });
 $('#wear_filter').select2({
     placeholder: "Nusidėvėjimas",
+    allowClear: true
+  });
+$('#category_filter').select2({
+    placeholder: "Kategorija",
     allowClear: true
   });
 
