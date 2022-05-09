@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVehiclesTable extends Migration
+class CreatePartImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateVehiclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('vehicles', function (Blueprint $table) {
-            $table->id();
+        Schema::create('part_images', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('part_id')->nullable();
+            $table->string('path');
             $table->timestamps();
+
+            $table->foreign('part_id')->references('id')->on('vehicle_parts')->onDelete('cascade');
         });
     }
 
@@ -26,6 +30,6 @@ class CreateVehiclesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('part_images');
     }
 }

@@ -126,29 +126,6 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <?php
-                          $totalPrice = 0;
-                        ?>
-                        @foreach($cart as $cart)
-                        @foreach($vehicleParts->where('id', $cart->part_id) as $part)
-                        <?php
-                          $totalPrice += $part->price;
-                        ?>
-                        <tr>
-                          <td class="w-25">
-                            <img src="{{ asset('storage/images/'.$part->image_path) }}" class="img-fluid img-thumbnail" alt="Sheep">
-                          </td>
-                          <td>{{ $part->name }}</td>
-                          <td>{{ $part->price }} €</td>
-                          <td>{{ $part->price }} €</td>
-                          <td>
-                            <button id="removeFromCart" value="{{ $cart->id }}" class="btn btn-danger btn-sm">
-                              <i class="fa fa-times"></i>
-                            </button>
-                          </td>
-                        </tr>
-                        @endforeach
-                        @endforeach
                       </tbody>
                     </table> 
                     <div class="d-flex justify-content-end">

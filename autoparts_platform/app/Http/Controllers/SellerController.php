@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Parts;
+use App\Models\PartsCategories;
 use App\Models\Seller;
+use App\Models\VehicleBrand;
+use App\Models\VehicleModel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SellerController extends Controller
 {
@@ -36,19 +45,13 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        // $user = auth()->user();
         $user = Auth::user();
-
-        // dd($user);
-
         $data = request()->validate([
             'name' => 'required',
             'address' => 'required',
             'email' => 'required',
             'phone' => 'required'
         ]);
-
-        // dd($data);
 
         $seller = Seller::create(
             [
@@ -58,14 +61,9 @@ class SellerController extends Controller
                 'phone' => $data['phone']
             ]
         );
-
-        // dd($seller);
-
         $seller->user()->associate($user);
 
         $seller->save();
-        
-        // dd($seller);
 
         return view('index');
 
@@ -123,17 +121,59 @@ class SellerController extends Controller
         $userId = Auth::id();
 
         $seller = Seller::where('user_id', $userId)->first();
+        $vehicleBrands = VehicleBrand::all();
+        $vehicleModels = VehicleModel::all();
+        $vehicleParts = Parts::all();
+        $partsCategories = PartsCategories::all();
+        $cart = Cart::where('user_id', $userId)->get();
+        $cartCount = DB::table('carts')
+            ->where('user_id', $userId)->count();
 
         if($seller)
         {
-            return view('carparts.sellparts');
+            return view('carparts.sellparts', compact('vehicleBrands', 'vehicleModels', 'vehicleParts' , 'partsCategories', 'cart', 'cartCount'));
         }
         else
         {
-            dd(":((");
-            return view('carparts.sellaccount');
+            return view('carparts.sellaccount', compact('vehicleBrands'));
         }
         
+    }
+    public function sellparts()
+    {
+        Auth::check();
+        $user = Auth::user();
+        $userId = Auth::id();
+
+        $seller = Seller::where('user_id', $userId)->first();
+        $vehicleBrands = VehicleBrand::all();
+        $vehicleModels = VehicleModel::all();
+        $partsCategories = PartsCategories::all();
+        $cart = Cart::where('user_id', $userId)->get();
+        $cartCount = DB::table('carts')
+            ->where('user_id', $userId)->count();
+
+            return view('carparts.sellparts', compact('vehicleBrands', 'vehicleModels', 'partsCategories', 'cart', 'cartCount'));
+
+        
+    }
+
+    public function getModelss(Request $request) 
+    {
+        $brandId = $request->input('id');
+        // $brandId = $request->input('tekstas');
+
+        $models = VehicleModel::where('brand_id', $brandId)->get();
+    }
+
+    public function getModels(Request $request)
+    {
+        $brandId = $request->input('id');
+        error_log($brandId);
+        $models = VehicleModel::where('brand_id', $brandId)->get();
+        return response()->json([
+            'models' => $models,
+        ]);
     }
 
 }

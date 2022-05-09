@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Parts;
+use App\Models\PartsCategories;
 use App\Models\Seller;
+use App\Models\VehicleBrand;
+use App\Models\VehicleParts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
@@ -32,23 +38,45 @@ class HomeController extends Controller
 
         return view('index', compact('seller', 'userId'));
     }
-    // public function index()
-    // {
-    //     return view('index');
-    // }
     public function aboutUs()
     {
         return redirect()->route('index', ['#about']);
-        // return view('index');
     }
     public function contact()
     {
         return redirect()->route('index', ['#contact']);
-        // return view('index');
     }
     public function search()
     {
-        return view('carparts.search');
+        Auth::check();
+        $user = Auth::user();
+        $userId = Auth::id();
+
+        $seller = Seller::where('user_id', $userId)->first();
+        $vehicleBrands = VehicleBrand::all();
+        $partsCategories = PartsCategories::all();
+        $vehicleParts = Parts::all();
+        $cart = Cart::where('user_id', $userId)->get();
+        $cartCount = DB::table('carts')
+            ->where('user_id', $userId)->count();
+        // dd($cart);
+        return view('carparts.search', compact('vehicleBrands', 'partsCategories', 'vehicleParts', 'cart', 'cartCount'));
+    }
+
+    public function checkout()
+    {
+        Auth::check();
+        $user = Auth::user();
+        $userId = Auth::id();
+
+        $vehicleBrands = VehicleBrand::all();
+        $partsCategories = PartsCategories::all();
+        $vehicleParts = Parts::all();
+        $cart = Cart::where('user_id', $userId)->get();
+        $cartCount = DB::table('carts')
+            ->where('user_id', $userId)->count();
+        // dd($cart[0]->part_id);
+        return view('carparts.checkout', compact('vehicleBrands', 'partsCategories', 'vehicleParts', 'cart', 'cartCount'));
     }
 
 }

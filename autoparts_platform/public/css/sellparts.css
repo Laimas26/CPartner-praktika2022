@@ -1,0 +1,17 @@
+/* button{
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+  } */
+  
+  /* img {
+    position: relative;
+  } */
+  
+  /* button span {
+    color: red;
+  } */
+  .AClass{
+    right:0px;
+    position: relative;
+}

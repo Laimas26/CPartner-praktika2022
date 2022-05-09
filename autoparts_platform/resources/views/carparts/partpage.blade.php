@@ -14,7 +14,7 @@
     <div class="container">
 
       <div class="section-title">
-        <h2>Auto Dalių paieška</h2>
+        <h2>Auto Dalis</h2>
         <p></p>
       </div>
 
@@ -121,65 +121,6 @@
           </table>
       </div>
     </div>
-
-    <div class="modal fade bd-example-modal-lg product_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="row">
-            {{-- <div class="col-lg-2 order-lg-1 order-2">
-                <ul class="image_list">
-                    <li data-image="https://i.imgur.com/21EYMGD.jpg"><img src="https://i.imgur.com/21EYMGD.jpg" alt=""></li>
-                    <li data-image="https://i.imgur.com/DPWSNWd.jpg"><img src="https://i.imgur.com/DPWSNWd.jpg" alt=""></li>
-                    <li data-image="https://i.imgur.com/HkEiXfn.jpg"><img src="https://i.imgur.com/HkEiXfn.jpg" alt=""></li>
-                </ul>
-            </div> --}}
-            <div class="col-lg-4 order-lg-2 order-1 ml-3">
-                <div class="image_selected_div"><img class="image_selected h-100 mx-auto" src="https://i.imgur.com/qEwct2O.jpg" alt=""></div>
-            </div>
-            <div class="col-lg-6 order-3">
-                <div class="product_description">
-                    <div class="product_name"></div>
-                    <div> 
-                      <span class="product_price"></span>
-                    </div>
-                    <hr class="singleline">
-                    <div class="product_description"> 
-                      <span class="product_info"><span>
-                    </div>
-                    <div>
-                      <input type="text" name="hidden_partid" id="hidden_partid" hidden>
-                        <div class="row pt-3">
-                              <div class="seller_info_div">
-                                <span class="font-weight-bold">Pardavėjas: </span>
-                                <span class="seller_name"></span><br>
-                                <span class="font-weight-bold">Pardavėjo adresas: </span>
-                                <span class="seller_address"></span><br>
-                                <span class="font-weight-bold">Pardavėjo el. paštas: </span>
-                                <span class="seller_email"></span><br>
-                                <span class="font-weight-bold">Pardavėjo numeris: </span>
-                                <span class="seller_number"></span>
-                              </div>
-                            <div class="col-md-7"> </div>
-                        </div>
-                    </div>
-                    <hr class="singleline">
-                    <div class="order_info d-flex flex-row">
-                        <form action="#">
-                    </div>
-                    <d iv class="row">
-                        <div class="col-xs-6" style="margin-left: 13px;">
-                        </div>
-                        <div class="col-xs-6">
-                          <button type="button" id="addto_cart" class="btn btn-primary shop-button">Pridėti į krepšelį</button>
-                          <button type="button" id="buy_now" class="btn btn-success shop-button">Pirkti dabar</button>
-                            {{-- <div class="product_fav"><i class="fas fa-heart"></i></div> --}}
-                        </div>
-                    </d>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <script>
@@ -258,66 +199,15 @@ $('#wear_filter').select2({
     getParts(data.id);
 });
 
-$(document).ready(function($) {
-
-  $("#parts_search").on('click', 'tr.table-row', function () {
-    var id = $(this).data('id');
-    var userId = $(this).data('userid');
-    var modelId = $(this).data('modelid');
-    var categoryId = $(this).data('categoryid');
-
-    $.ajax({
-             type:'GET',
-             url:'/getonepart',
-             contentType: "application/json; charset=utf-8",
-             data: { id: id, user_id: userId, model_id: modelId, category_id: categoryId },
-             success: function(response) {
-               var part = response.part;
-               var user = response.user;
-               var model = response.model;
-               var category = response.category;
-               var imgName = part[0].image_path;
-               var fullpath = "{!! asset('storage/images/"+imgName+"') !!}";
-
-               $('.image_selected').attr('src', fullpath);
-               $('#hidden_partid').val(part[0].id);
-               $('.product_price').html(part[0].price + '<i class="bi bi-currency-euro"></i>');
-               $('.product_info').html(part[0].name + '<br><span class="product_category"> Kategorija: ' + category[0].name + '</span>');
-               $('.seller_name').html(user[0].name);
-               $('.seller_address').html(user[0].address);
-               $('.seller_email').html(user[0].email);
-               $('.seller_number').html(user[0].phone);
-
-               $('.product_modal').modal('show');
-             },
-             error: function(e) {
-                 console.log(e);
-             }
-          });
-  })
-
-  $('#addto_cart').on('click', function () {
-    var partId = $('#hidden_partid').val();
-    $.ajax({
-             type:'GET',
-             url:'/addcart',
-             contentType: "application/json; charset=utf-8",
-             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-             data: { id: partId},
-             success: function(response) {
-               console.log(response);
-
-             },
-             error: function(e) {
-                 console.log(e);
-             }
-          });
-  })
+(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
 });
-
   </script>
 
-<link rel="stylesheet" href="{{ URL::asset('css/search.css') }}">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 
 @endsection

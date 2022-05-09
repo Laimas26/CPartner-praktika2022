@@ -18,7 +18,7 @@
             <div class="container">
               <h2 class="animate__animated animate__fadeInDown">Sveiki atvykę į <span>AutoDalys</span></h2>
               <p class="animate__animated animate__fadeInUp"></p>
-              <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+              <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Apie mus</a>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@
               <div class="address">
                 <i class="bi bi-geo-alt"></i>
                 <h4>Vieta:</h4>
-                <p>Taikos pr. 16, Klaipėda</p>
+                <p>Smiltelės g. 12, Klaipėda</p>
               </div>
 
               <div class="email">
