@@ -135,7 +135,7 @@ class SellerController extends Controller
         }
         else
         {
-            return view('carparts.sellaccount', compact('vehicleBrands'));
+            return view('carparts.sellaccount', compact('vehicleBrands', 'vehicleModels', 'vehicleParts' , 'partsCategories', 'cart', 'cartCount'));
         }
         
     }
