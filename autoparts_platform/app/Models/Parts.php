@@ -13,6 +13,7 @@ class Parts extends Model
     protected $fillable = [
         'model_id',
         'user_id',
+        'part_id',
         'name',
         'price',
         'image_path',

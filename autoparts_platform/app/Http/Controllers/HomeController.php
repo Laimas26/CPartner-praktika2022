@@ -7,6 +7,7 @@ use App\Models\Parts;
 use App\Models\PartsCategories;
 use App\Models\Seller;
 use App\Models\VehicleBrand;
+use App\Models\VehicleModel;
 use App\Models\VehicleParts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,7 @@ class HomeController extends Controller
 
         $seller = Seller::where('user_id', $userId)->first();
         $vehicleBrands = VehicleBrand::all();
+        $vehicleModels = VehicleModel::all();
         $partsCategories = PartsCategories::all();
         $vehicleParts = Parts::all();
         $cart = Cart::where('user_id', $userId)->get();
@@ -75,8 +77,39 @@ class HomeController extends Controller
         $cart = Cart::where('user_id', $userId)->get();
         $cartCount = DB::table('carts')
             ->where('user_id', $userId)->count();
-        // dd($cart[0]->part_id);
-        return view('carparts.checkout', compact('vehicleBrands', 'partsCategories', 'vehicleParts', 'cart', 'cartCount'));
+
+        $intent = auth()->user()->createSetupIntent();
+        return view('carparts.checkout', compact('vehicleBrands', 'partsCategories', 'vehicleParts', 'cart', 'cartCount', 'intent'));
     }
+
+    public function purchase(Request $request)
+{
+    $user          = $request->user();
+    $paymentMethod = $request['payment_method'];
+    $totalPrice = 0;
+    $userId = $user->id;
+    dd($paymentMethod);
+    $carts = Cart::where('user_id', $userId)->get();
+    foreach($carts as $cart)
+    {
+        foreach(Parts::where('id', $cart->part_id)->get() as $part)
+        {
+            $totalPrice += $part->price;
+        } 
+    }
+    
+
+    // dd($totalPrice);
+
+    try {
+        $user->createOrGetStripeCustomer();
+        $user->updateDefaultPaymentMethod($paymentMethod);
+        $user->charge($totalPrice * 100, $paymentMethod);        
+    } catch (\Exception $exception) {
+        return back()->with('error', $exception->getMessage());
+    }
+
+    return back()->with('message', 'Product purchased successfully!');
+}
 
 }

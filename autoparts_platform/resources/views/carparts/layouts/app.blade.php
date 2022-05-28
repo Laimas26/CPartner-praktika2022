@@ -24,7 +24,7 @@
     <link href="{{ asset('assets/css/search.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/sell.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-
+    <link href="{{ asset('assets/css/checkout.css') }}" rel="stylesheet">
 
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/css/bootstrap-select.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
     
 
     <!-- Template Main CSS File -->
@@ -156,8 +157,8 @@
                     </div>
                   </div>
                   <div class="modal-footer border-top-0 d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
-                    <a href="{{ route('checkout')}}"><button type="button" class="btn btn-success">Checkout</button></a>
+                    <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Uždaryti</button>
+                    <a href="{{ route('checkout')}}"><button type="button" class="btn btn-success">Pirkti</button></a>
                   </div>
                 </div>
               </div>
@@ -304,8 +305,8 @@ function getParts(modelId)
                 $('#parts_search').empty();
                 $.each(response.parts, function (key, part) {
                   var name = part.image_path;
+                  console.log(part.name);
                   var fullpath = "{!! asset('storage/images/"+name+"') !!}"
-                  // console.log(source);
                   $('#parts_search').append('<tr data-categoryid="'+part.category_id+'" data-userid="'+part.user_id+'" data-modelid="'+part.model_id+'" data-id="'+part.id+'" class="table-row"><td><img style="height: 4cm" src="'+fullpath+'" alt=""></td>'+
                     '<td><span>'+part.name+'</span></td>'+
                     '<td><span>'+part.make_years+'</span></td>'+

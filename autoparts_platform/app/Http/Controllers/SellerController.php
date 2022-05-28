@@ -121,8 +121,8 @@ class SellerController extends Controller
         $userId = Auth::id();
 
         $seller = Seller::where('user_id', $userId)->first();
-        $vehicleBrands = VehicleBrand::all();
-        $vehicleModels = VehicleModel::all();
+        $vehicleBrands = DB::table('vehicle_brands')->orderBy('name', 'asc')->get();
+        $vehicleModels = DB::table('vehicle_models')->orderBy('name', 'asc')->get();
         $vehicleParts = Parts::all();
         $partsCategories = PartsCategories::all();
         $cart = Cart::where('user_id', $userId)->get();

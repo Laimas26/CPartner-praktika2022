@@ -25,6 +25,7 @@ Route::get('/about', [App\Http\Controllers\HomeController::class, 'aboutUs'])->n
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 Route::get('/search', [App\Http\Controllers\HomeController::class, 'search'])->name('search');
 Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
+Route::post('/purchase', [App\Http\Controllers\HomeController::class, 'purchase'])->name('checkout.purchase');
 
 
 Route::get('/sell', [App\Http\Controllers\SellerController::class, 'sellaccount'])->name('sellaccount');
@@ -42,5 +43,9 @@ Route::get('/getonepart', [App\Http\Controllers\VehiclePartsController::class, '
 Route::get('/filterparts', [App\Http\Controllers\VehiclePartsController::class, 'filterParts'])->name('parts.filterparts');
 Route::get('/addcart', [App\Http\Controllers\CartController::class, 'addToCart'])->name('carts.addcart');
 Route::get('/removecart', [App\Http\Controllers\CartController::class, 'removeFromCart'])->name('carts.removecart');
+
+// Route::post('\checkout', [App\Http\Controllers\PaymentController::class, 'paymentPost'])->name('payment.post');
+// Route::get('stripe', 'StripeController@stripe');
+// Route::post('payment', 'StripeController@payStripe');
 
 

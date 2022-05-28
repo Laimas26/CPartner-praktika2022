@@ -6,14 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "cartalyst/stripe-laravel": "^13.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/cashier": "^13.11",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "laravelcollective/html": "^6.2",
-        "livewire/livewire": "^2.10"
+        "livewire/livewire": "^2.10",
+        "stripe/stripe-php": "^8.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

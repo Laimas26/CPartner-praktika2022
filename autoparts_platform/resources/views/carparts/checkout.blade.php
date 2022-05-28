@@ -1,6 +1,104 @@
 @extends('carparts.layouts.app2')
 @section('content')
 
+<script src="https://js.stripe.com/v3/"></script>
+ 
+{{-- <script>
+
+    let stripe = Stripe("{{ env('STRIPE_KEY') }}")
+    let elements = stripe.elements()
+    let style = {
+    base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#aab7c4'
+        }
+    },
+    invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+    }
+}
+let card = elements.create('card', {style: style})
+card.mount('#card-element')
+let paymentMethod = null
+$('.card-form').on('submit', function (e) {
+    $('button.pay').attr('disabled', true)
+    if (paymentMethod) {
+        return true
+    }
+    stripe.confirmCardSetup(
+        "{{ $intent->client_secret }}",
+        {
+            payment_method: {
+                card: card,
+                billing_details: {name: $('.card_holder_name').val()}
+            }
+        }
+    ).then(function (result) {
+        if (result.error) {
+            $('#card-errors').text(result.error.message)
+            $('button.pay').removeAttr('disabled')
+        } else {
+            paymentMethod = result.setupIntent.payment_method
+            $('.payment-method').val(paymentMethod)
+            $('.card-form').submit()
+        }
+    })
+    return false
+})
+    const stripe = Stripe('STRIPE_KEY');
+ 
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+ 
+    cardElement.mount('#card-element');
+
+
+
+    const cardHolderName = document.getElementById('card-holder-name');
+    const cardButton = document.getElementById('card-button');
+ 
+    cardButton.addEventListener('click', async (e) => {
+    const { paymentMethod, error } = await stripe.createPaymentMethod(
+        'card', cardElement, {
+            billing_details: { name: cardHolderName.value }
+        }
+    );
+ 
+    if (error) {
+        // Display "error.message" to the user...
+    } else {
+        // The card has been verified successfully...
+    }
+});
+</script> --}}
+
+<style>
+    .StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+</style>
 
 <section>
     <div class="py-5 text-center">
@@ -18,7 +116,6 @@
             ?>
             <ul class="list-group mb-3">
                 @foreach($cart as $cart)
-                
                 @foreach($vehicleParts->where('id', $cart->part_id) as $part)
                 <?php
                           $totalPrice += $part->price;
@@ -37,18 +134,11 @@
                     <strong>{{ $totalPrice }} €</strong>
                 </li>
             </ul>
-            
-{{-- 
-            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <button type="submit" class="btn btn-danger">Redeem</button>
-                </div>
-            </form> --}}
         </div>
         <div class="col-md-7 col-lg-8">
-            <h4 class="mb-3">Billing address</h4>
-            <form class="needs-validation" novalidate>
+            <h4 class="mb-3">Pristatymo adresas</h4>
+            {{-- <form method="POST" action="{{ route('checkout.purchase', $totalPrice) }}" class="card-form mt-3 mb-3">
+                @csrf --}}
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">Vardas</label>
@@ -123,7 +213,7 @@
 
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="same-address">
-                    <label class="form-check-label" for="same-address">Pristatymo adresas toks pats kaip, mokėtojo adresas</label>
+                    <label class="form-check-label" for="same-address">Pristatymo adresas toks pat kaip mokėtojo adresas</label>
                 </div>
 
                 <div class="form-check">
@@ -135,7 +225,7 @@
 
                 <h4 class="mb-3">Apmokėjimas</h4>
 
-                <div class="my-3">
+                {{-- <div class="my-3">
                     <div class="form-check">
                         <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
                         <label class="form-check-label" for="credit">Kreditinė kortelė (MasterCard)</label>
@@ -152,49 +242,36 @@
                         <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
                         <label class="form-check-label" for="paypal">Elektroninė bankininkystė</label>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row gy-3">
-                    <div class="col-md-6">
-                        <label for="cc-name" class="form-label">Vardas</label>
-                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                        <small class="text-muted">Vardas Pavardė kaip ant kortelės</small>
-                        <div class="invalid-feedback">
-                            Name on card is required
-                        </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <label for="cc-number" class="form-label">Kreditinės kortelės numeris</label>
-                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Credit card number is required
+                    <form method="POST" action="{{ route('checkout.purchase') }}" class="card-form mt-3 mb-3">
+                        @csrf
+                        <input type="hidden" name="payment_method" class="payment-method">
+                        <input class="StripeElement mb-3" name="card_holder_name" placeholder="Vardas pavardė" required>
+                        <div class="col-lg-6 col-md-6">
+                            <div id="card-element"></div>
                         </div>
-                    </div>
+                        <div id="card-errors" role="alert"></div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary pay">
+                                Pirkti
+                            </button>
+                        </div>
+                    </form>
 
-                    <div class="col-md-3">
-                        <label for="cc-expiration" class="form-label">Galiojimo data</label>
-                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Expiration date required
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="cc-cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                        <div class="invalid-feedback">
-                            Security code required
-                        </div>
-                    </div>
+                            @if(session('message'))
+                            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                            @endif
+                            @if(session('error'))
+                                <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
+                            @endif
                 </div>
-
-                <hr class="my-4">
-
-                <button class="w-100 btn btn-danger btn-lg" type="submit">Tęsti pirkimą</button>
-            </form>
+            {{-- </form> --}}
         </div>
     </div>
 </section>
 
 @endsection
+
