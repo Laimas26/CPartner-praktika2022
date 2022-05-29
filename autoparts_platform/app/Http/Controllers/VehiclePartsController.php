@@ -97,56 +97,53 @@ class VehiclePartsController extends Controller
     function filterParts(Request $request)
     {
         $modelId = $request->input('id');
-        // $fromDate = $request->input('fromDate');
-        // $toDate = $request->input('toDate');
-        // $wearFilter = $request->input('wearFilter');
-        error_log($modelId);
-        // if($fromDate != null && $toDate != null && $wearFilter != null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '>=', $fromDate)
-        // ->where('make_years', '<=', $toDate)
-        // ->where('part_wear', '=', $wearFilter)->get();
-        // }
-        // else if($fromDate == null && $toDate != null && $wearFilter != null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '<=', $toDate)
-        // ->where('part_wear', '=', $wearFilter)->get();
-        // }
-        // else if($fromDate == null && $toDate == null && $wearFilter != null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('part_wear', '=', $wearFilter)->get();
-        // }
-        // else if($fromDate != null && $toDate != null && $wearFilter == null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '>=', $fromDate)
-        // ->where('make_years', '<=', $toDate)->get();
-        // }
-        // else if($fromDate != null && $toDate == null && $wearFilter == null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '>=', $fromDate)->get();
-        // }
-        // else if($fromDate == null && $toDate != null && $wearFilter != null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '>=', $fromDate)
-        // ->where('part_wear', '=', $wearFilter)->get();
-        // }
-        // else if($fromDate == null && $toDate != null && $wearFilter == null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)
-        // ->where('make_years', '>=', $toDate)->get();
-        // }
-        // else($fromDate == null && $toDate == null && $wearFilter == null)
-        // {
-        //     $parts = Parts::where('model_id', $modelId)->get();
-        // }
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+        $wearFilter = $request->input('wearFilter');
+        $categoryFilter = $request->input('partsCategory');
+        // error_log($modelId);
+        
+        if(!empty($fromDate) && !empty($toDate) && !empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '>=', $fromDate)
+        ->where('make_years', '<=', $toDate)
+        ->where('part_wear', '=', $wearFilter)->get();
+        }
+        else if(!empty($fromDate) && !empty($toDate) && empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '>=', $fromDate)
+        ->where('make_years', '<=', $toDate)->get();
+        }
+        else if(!empty($fromDate) && empty($toDate) && empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '>=', $fromDate)->get();
+        }
+        else if(!empty($fromDate) && empty($toDate) && !empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '>=', $fromDate)
+        ->where('part_wear', '=', $wearFilter)->get();
+        }
+        else if(empty($fromDate) && !empty($toDate) && empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '<=', $toDate)->get();
+        }
+        else if(empty($fromDate) && !empty($toDate) && !empty($wearFilter))
+        {
+            $parts = Parts::where('model_id', $modelId)
+        ->where('make_years', '<=', $toDate)
+        ->where('part_wear', '=', $wearFilter)->get();
+        }
 
-        $parts = Parts::where('model_id', $modelId);
+        if(!empty($categoryFilter))
+        {
+            $parts = $parts->where('category_id', $categoryFilter);
+        }
+        
 
         return response()->json([
             'parts' => $parts

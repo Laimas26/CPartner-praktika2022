@@ -76,7 +76,7 @@
           <div class="col-4 border border-dark">
             <h6>Pasirinkite filtravimą</h6>
             <select id="wear_filter" style="width: 60%" data-live-search="true">
-              <option></option>
+              <option></option>categoryid
               <option data-tokens="" value="Patenkinama">Patenkinama būklė</option>
               <option data-tokens="" value="Gera">Gera būklė</option>
               <option data-tokens="" value="Puiki">Puiki būklė</option>
@@ -131,13 +131,6 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="row">
-            {{-- <div class="col-lg-2 order-lg-1 order-2">
-                <ul class="image_list">
-                    <li data-image="https://i.imgur.com/21EYMGD.jpg"><img src="https://i.imgur.com/21EYMGD.jpg" alt=""></li>
-                    <li data-image="https://i.imgur.com/DPWSNWd.jpg"><img src="https://i.imgur.com/DPWSNWd.jpg" alt=""></li>
-                    <li data-image="https://i.imgur.com/HkEiXfn.jpg"><img src="https://i.imgur.com/HkEiXfn.jpg" alt=""></li>
-                </ul>
-            </div> --}}
             <div class="col-lg-4 order-lg-2 order-1 ml-3">
                 <div class="image_selected_div"><img class="image_selected h-100 mx-auto" src="https://i.imgur.com/qEwct2O.jpg" alt=""></div>
             </div>
@@ -212,34 +205,32 @@ function filterOptions()
   var fromDate = $('#from_date').val();
   var toDate = $('#to_date').val();
   var wearFilter = $('#wear_filter').val();
+  var partsCategory = $('#category_filter').val();
 
-  alert('sadasd');
-
-  // console.log(modelId);
-  // console.log(fromDate);
-  // console.log(toDate);
-  // console.log(wearFilter);
+  console.log(modelId);
+  console.log(fromDate);
+  console.log(toDate);
+  console.log(wearFilter);
+  console.log(partsCategory);
 
   $.ajax({
              type:'GET',
              url:'/filterparts',
              contentType: "application/json; charset=utf-8",
-             data: { id: modelId, fromDate: fromDate, toDate: toDate, wearFilter: wearFilter },
+             data: { id: modelId, fromDate: fromDate, toDate: toDate, wearFilter: wearFilter, partsCategory: partsCategory },
              success: function(response) {
                 console.log(response.parts);
                 $('#parts_search').empty();
                 $.each(response.parts, function (key, part) {
-                  console.log('HEYHEYE');
-                  alert('hahha');
-                  // var name = part.image_path;
-                  // var fullpath = "{!! asset('storage/images/"+name+"') !!}"
-                  // // console.log(source);
-                  // $('#parts_search').append('<tr><a><td><img style="height: 4cm" src="'+fullpath+'" alt=""></td>'+
-                  //   '<td><span>'+part.name+'</span></td>'+
-                  //   '<td><span>'+part.make_years+'</span></td>'+
-                  //   '<td><span>'+part.price+' €</span></td>'+
-                  //   '<td><span>'+part.part_wear+'</span></td></a></tr>'
-                  //   )
+                  var name = part.image_path;
+                  console.log(part.name);
+                  var fullpath = "{!! asset('storage/images/"+name+"') !!}"
+                  $('#parts_search').append('<tr data-categoryid="'+part.category_id+'" data-userid="'+part.user_id+'" data-modelid="'+part.model_id+'" data-id="'+part.id+'" class="table-row"><td><img style="height: 4cm" src="'+fullpath+'" alt=""></td>'+
+                    '<td><span>'+part.name+'</span></td>'+
+                    '<td><span>'+part.make_years+'</span></td>'+
+                    '<td><span>'+part.price+' €</span></td>'+
+                    '<td><span>'+part.part_wear+'</span></td></tr>'
+                    )
                 })
              },
              error: function(e) {

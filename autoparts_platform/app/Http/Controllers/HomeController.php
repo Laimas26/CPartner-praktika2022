@@ -61,7 +61,7 @@ class HomeController extends Controller
         $seller = Seller::where('user_id', $userId)->first();
         $vehicleModels = DB::table('vehicle_models')->orderBy('name', 'asc')->get();
         $vehicleBrands = DB::table('vehicle_brands')->orderBy('name', 'asc')->get();
-        $partsCategories = DB::table('parts')->orderBy('name', 'asc')->get();
+        $partsCategories = DB::table('parts_categories')->orderBy('name', 'asc')->get();
         $vehicleParts = Parts::all();
         $cart = Cart::where('user_id', $userId)->get();
         $cartCount = DB::table('carts')
