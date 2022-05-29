@@ -2,22 +2,23 @@
 
 namespace App\Models;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VehicleModel extends Model
+class Region extends Model
 {
-    use HasFactory;
+    use HasFactory, Uuids;
 
     protected $fillable = [
-        'name'
+        'name',
     ];
     protected $casts = [
         'id' => 'string'
     ];
 
-    public function brand()
+    public function parts()
     {
-        return $this->belongsTo(VehicleBrand::class);
+        return $this->hasMany(Cities::class);
     }
 }

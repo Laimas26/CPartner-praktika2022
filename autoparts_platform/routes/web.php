@@ -1,5 +1,9 @@
 <?php
 
+use App\Mail\PurchaseMail;
+use App\Mail\SellMail;
+use App\Models\Parts;
+use App\Models\Seller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,5 +51,18 @@ Route::get('/removecart', [App\Http\Controllers\CartController::class, 'removeFr
 // Route::post('\checkout', [App\Http\Controllers\PaymentController::class, 'paymentPost'])->name('payment.post');
 // Route::get('stripe', 'StripeController@stripe');
 // Route::post('payment', 'StripeController@payStripe');
+
+Route::get('/email', function() {
+    return new PurchaseMail();
+});
+Route::get('/sellemail', function() {
+
+    $user = auth()->user();
+
+    $seller = Seller::where('user_id', '339b4f23-8229-4143-8f9d-1224775c04af')->get();
+    $part = Parts::where('id', '95191f59-2e4f-463c-b288-6eeb79b289e8')->get();
+
+    return new SellMail($part, $user);
+});
 
 

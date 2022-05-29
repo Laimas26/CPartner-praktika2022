@@ -59,6 +59,7 @@ class VehiclePartsController extends Controller
         $partCategory = PartsCategories::where('id', $categoryId)->first();
 
         $part->category()->associate($partCategory);
+        $part->seller()->associate($user);
 
         $part->save();
 

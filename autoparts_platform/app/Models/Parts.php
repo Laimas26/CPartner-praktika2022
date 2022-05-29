@@ -29,4 +29,12 @@ class Parts extends Model
     {
         return $this->belongsTo(PartsCategories::class);
     }
+    public function model()
+    {
+        return $this->belongsTo(VehicleModel::class);
+    }
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
 }

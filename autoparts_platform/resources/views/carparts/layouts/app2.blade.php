@@ -47,6 +47,30 @@
     @yield('styles')
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+    
+    <style>
+      .StripeElement {
+          box-sizing: border-box;
+          height: 40px;
+          padding: 10px 12px;
+          border: 1px solid transparent;
+          border-radius: 4px;
+          background-color: white;
+          box-shadow: 0 1px 3px 0 #e6ebf1;
+          -webkit-transition: box-shadow 150ms ease;
+          transition: box-shadow 150ms ease;
+      }
+      .StripeElement--focus {
+          box-shadow: 0 1px 3px 0 #cfd7df;
+      }
+      .StripeElement--invalid {
+          border-color: #fa755a;
+      }
+      .StripeElement--webkit-autofill {
+          background-color: #fefde5 !important;
+      }
+  </style>
+
 </head>
 <body>
     <!-- ======= Top Bar ======= -->
@@ -371,78 +395,85 @@ $(document).ready(function($) {
   });
 </script>
 </html>
-{{-- @section('styles')
-<style>
-    .StripeElement {
-        box-sizing: border-box;
-        height: 40px;
-        padding: 10px 12px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        background-color: white;
-        box-shadow: 0 1px 3px 0 #e6ebf1;
-        -webkit-transition: box-shadow 150ms ease;
-        transition: box-shadow 150ms ease;
-    }
-    .StripeElement--focus {
-        box-shadow: 0 1px 3px 0 #cfd7df;
-    }
-    .StripeElement--invalid {
-        border-color: #fa755a;
-    }
-    .StripeElement--webkit-autofill {
-        background-color: #fefde5 !important;
-    }
-</style>
-@endsection --}}
-
-{{-- @section('scripts')
 <script src="https://js.stripe.com/v3/"></script>
+ 
 <script>
     let stripe = Stripe("{{ env('STRIPE_KEY') }}")
     let elements = stripe.elements()
     let style = {
-        base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSmoothing: 'antialiased',
-            fontSize: '16px',
-            '::placeholder': {
-                color: '#aab7c4'
-            }
-        },
-        invalid: {
-            color: '#fa755a',
-            iconColor: '#fa755a'
+    base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#aab7c4'
         }
+    },
+    invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
     }
-    let card = elements.create('card', {style: style})
-    card.mount('#card-element')
-    let paymentMethod = null
-    $('.card-form').on('submit', function (e) {
-        $('button.pay').attr('disabled', true)
-        if (paymentMethod) {
-            return true
-        }
-        stripe.confirmCardSetup(
-            "{{ $intent->client_secret }}",
-            {
+}
+let card = elements.create('card', {style: style})
+card.mount('#card-element')
+let paymentMethod = null
+$('.card-form').on('submit', function (e) {
+    $('button.pay').attr('disabled', true)
+    if (paymentMethod) {
+        return true
+    }
+    stripe.confirmCardSetup(
+        {{ $intent->client_secret }},
+        {
+          stripe
+              .confirmCardSetup('{! $intent->client_secret !}', {
                 payment_method: {
-                    card: card,
-                    billing_details: {name: $('.card_holder_name').val()}
-                }
-            }
-        ).then(function (result) {
-            if (result.error) {
-                $('#card-errors').text(result.error.message)
-                $('button.pay').removeAttr('disabled')
-            } else {
-                paymentMethod = result.setupIntent.payment_method
-                $('.payment-method').val(paymentMethod)
-                $('.card-form').submit()
-            }
-        })
-        return false
+                  card: cardElement,
+                  billing_details: {
+                    name: 'Jenny Rosen',
+                  },
+                },
+              })
+              .then(function(result) {
+                // Handle result.error or result.setupIntent
+              });
+        }
+    ).then(function (result) {
+        if (result.error) {
+            $('#card-errors').text(result.error.message)
+            $('button.pay').removeAttr('disabled')
+        } else {
+            paymentMethod = result.setupIntent.payment_method
+            $('.payment-method').val(paymentMethod)
+            $('.card-form').submit()
+        }
     })
+    return false
+})
+    const stripe = Stripe('STRIPE_KEY');
+ 
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+ 
+    cardElement.mount('#card-element');
+
+
+
+    const cardHolderName = document.getElementById('card-holder-name');
+    const cardButton = document.getElementById('card-button');
+ 
+    cardButton.addEventListener('click', async (e) => {
+    const { paymentMethod, error } = await stripe.createPaymentMethod(
+        'card', cardElement, {
+            billing_details: { name: cardHolderName.value }
+        }
+    );
+ 
+    if (error) {
+        // Display "error.message" to the user...
+    } else {
+        // The card has been verified successfully...
+    }
+});
 </script>
-@endsection --}}

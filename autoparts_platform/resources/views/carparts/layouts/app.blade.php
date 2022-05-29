@@ -123,7 +123,6 @@
                           <th scope="col">Prekė</th>
                           <th scope="col">Kaina</th>
                           <th scope="col">Viso</th>
-                          {{-- <th scope="col">Actions</th> --}}
                         </tr>
                       </thead>
                       <tbody>

@@ -1,104 +1,6 @@
 @extends('carparts.layouts.app2')
 @section('content')
 
-<script src="https://js.stripe.com/v3/"></script>
- 
-{{-- <script>
-
-    let stripe = Stripe("{{ env('STRIPE_KEY') }}")
-    let elements = stripe.elements()
-    let style = {
-    base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-            color: '#aab7c4'
-        }
-    },
-    invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-    }
-}
-let card = elements.create('card', {style: style})
-card.mount('#card-element')
-let paymentMethod = null
-$('.card-form').on('submit', function (e) {
-    $('button.pay').attr('disabled', true)
-    if (paymentMethod) {
-        return true
-    }
-    stripe.confirmCardSetup(
-        "{{ $intent->client_secret }}",
-        {
-            payment_method: {
-                card: card,
-                billing_details: {name: $('.card_holder_name').val()}
-            }
-        }
-    ).then(function (result) {
-        if (result.error) {
-            $('#card-errors').text(result.error.message)
-            $('button.pay').removeAttr('disabled')
-        } else {
-            paymentMethod = result.setupIntent.payment_method
-            $('.payment-method').val(paymentMethod)
-            $('.card-form').submit()
-        }
-    })
-    return false
-})
-    const stripe = Stripe('STRIPE_KEY');
- 
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
- 
-    cardElement.mount('#card-element');
-
-
-
-    const cardHolderName = document.getElementById('card-holder-name');
-    const cardButton = document.getElementById('card-button');
- 
-    cardButton.addEventListener('click', async (e) => {
-    const { paymentMethod, error } = await stripe.createPaymentMethod(
-        'card', cardElement, {
-            billing_details: { name: cardHolderName.value }
-        }
-    );
- 
-    if (error) {
-        // Display "error.message" to the user...
-    } else {
-        // The card has been verified successfully...
-    }
-});
-</script> --}}
-
-<style>
-    .StripeElement {
-  box-sizing: border-box;
-  height: 40px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: white;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-.StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-}
-.StripeElement--invalid {
-  border-color: #fa755a;
-}
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
-</style>
 
 <section>
     <div class="py-5 text-center">
@@ -137,12 +39,12 @@ $('.card-form').on('submit', function (e) {
         </div>
         <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">Pristatymo adresas</h4>
-            {{-- <form method="POST" action="{{ route('checkout.purchase', $totalPrice) }}" class="card-form mt-3 mb-3">
-                @csrf --}}
+            <form method="POST" action="{{ route('checkout.purchase') }}" class="card-form mt-3 mb-3">
+                @csrf
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="firstName" class="form-label">Vardas</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="" required>
                         <div class="invalid-feedback">
                             Valid first name is required.
                         </div>
@@ -150,7 +52,7 @@ $('.card-form').on('submit', function (e) {
 
                     <div class="col-sm-6">
                         <label for="lastName" class="form-label">Pavardė</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="" required>
                         <div class="invalid-feedback">
                             Valid last name is required.
                         </div>
@@ -159,30 +61,27 @@ $('.card-form').on('submit', function (e) {
 
                     <div class="col-12">
                         <label for="email" class="form-label">El. paštas <span class="text-muted">(Optional)</span></label>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="vardas.pavarde@gmail.com" required>
                         <div class="invalid-feedback">
-                            Please enter a valid email address for shipping updates.
+                            Prašome įvesti teisingą el. pašto adresą.
                         </div>
                     </div>
 
                     <div class="col-12">
                         <label for="address" class="form-label">Adresas</label>
-                        <input type="text" class="form-control" id="address" placeholder="Plaza street" required>
+                        <input type="text" class="form-control" id="address" name="address"  placeholder="Plaza street" required>
                         <div class="invalid-feedback">
                             Please enter your shipping address.
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <label for="address2" class="form-label">Adresas 2 <span class="text-muted">(Nebūtinas)</span></label>
-                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                    </div>
-
                     <div class="col-md-5">
                         <label for="country" class="form-label">Miestas</label>
-                        <select class="form-select" id="country" required>
+                        <select class="form-select" id="city" name="city" required>
                             <option value="">Choose...</option>
-                            <option>India</option>
+                            @foreach($cities as $city)
+                            <option value="{{ $city->id }}">{{ $city->name }}</option>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback">
                             Please select a valid country.
@@ -191,9 +90,11 @@ $('.card-form').on('submit', function (e) {
 
                     <div class="col-md-4">
                         <label for="state" class="form-label">Rajonas/Apylinkė</label>
-                        <select class="form-select" id="state" required>
+                        <select class="form-select" id="region" name="region" required>
                             <option value="">Choose...</option>
-                            <option>Delhi</option>
+                            @foreach($regions as $region)
+                            <option value="{{ $region->id }}">{{ $region->name }}</option>
+                            @endforeach
                         </select>
                         <div class="invalid-feedback">
                             Please provide a valid state.
@@ -202,7 +103,7 @@ $('.card-form').on('submit', function (e) {
 
                     <div class="col-md-3">
                         <label for="zip" class="form-label">Pašto kodas</label>
-                        <input type="text" class="form-control" id="zip" placeholder="" required>
+                        <input type="text" class="form-control" id="zip" name="zip" placeholder="" required>
                         <div class="invalid-feedback">
                             Zip code required.
                         </div>
@@ -245,9 +146,6 @@ $('.card-form').on('submit', function (e) {
                 </div> --}}
 
                 <div class="row gy-3">
-
-                    <form method="POST" action="{{ route('checkout.purchase') }}" class="card-form mt-3 mb-3">
-                        @csrf
                         <input type="hidden" name="payment_method" class="payment-method">
                         <input class="StripeElement mb-3" name="card_holder_name" placeholder="Vardas pavardė" required>
                         <div class="col-lg-6 col-md-6">
@@ -268,7 +166,6 @@ $('.card-form').on('submit', function (e) {
                                 <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
                             @endif
                 </div>
-            {{-- </form> --}}
         </div>
     </div>
 </section>

@@ -14,6 +14,7 @@ class Seller extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'address',
         'email',
         'phone'
@@ -22,5 +23,9 @@ class Seller extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function parts()
+    {
+        return $this->hasMany(Parts::class);
     }
 }
